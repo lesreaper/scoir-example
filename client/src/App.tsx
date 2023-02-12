@@ -1,47 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-// import Counter from './components/Counter/Counter';
-// import { useAppDispatch, useAppSelector } from './redux/hooks';
-// import { counterActions } from './redux/counter/slice';
-import { Login } from './components/Login/Login';
+import * as React from "react";
+import {
+  Routes,
+  Route,
+  useLocation,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
+import { useAppSelector } from './redux/hooks';
 
-function App(): JSX.Element {
-  // const dispatch = useAppDispatch();
+import { Dashboard } from "./components/Dashboard";
+import { LoginPage } from "./components/Login/LoginPage";
 
-  // const { value } = useAppSelector((state) => state.counter);
+function RequireAuth({ children }: { children: JSX.Element }): JSX.Element {
+  const { loggedin } = useAppSelector((state) => state.user);
+  const location = useLocation();
+  if (!loggedin) {
+    // Redirect them to the /login page, but save the current location they were
+    // trying to go to when they were redirected. This allows us to send them
+    // along to that page after they login, which is a nicer user experience
+    // than dropping them off on the home page.
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
 
-  // const increment = (): void => {
-  //   dispatch(counterActions.increment());
-  // };
+  return children;
+}
 
-  // const decrement = (): void => {
-  //   dispatch(counterActions.decrement());
-  // };
-
-  // const incrementAsync = (): void => {
-  //   dispatch(counterActions.incrementAsync());
-  // };
-
-  // const decrementAsync = (): void => {
-  //   dispatch(counterActions.decrementAsync());
-  // };
-
+export default function App(): JSX.Element {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        {/* <Counter
-          onIncrement={increment}
-          onDecrement={decrement}
-          onIncrementAsync={incrementAsync}
-          onDecrementAsync={decrementAsync}
-          value={value}
-        /> */}
-        <Login />
-      </header>
-    </div>
+    <Routes>
+      <Route element={<Outlet />}>
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/"
+          element={
+            <RequireAuth>
+              <Dashboard />
+            </RequireAuth>
+          }
+        />
+      </Route>
+    </Routes>
   );
 }
 
-export default App;
