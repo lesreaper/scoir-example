@@ -31,6 +31,9 @@ Lots to fit in here.
 
 Things I totally blew pass or you'll notice.
 
+### Overall
+1. Everything is on the main branch. Clearly didn't break this down into PR's and the like for speed.
+
 ### Back-end
 1. No DB. I never touched Go before today, so no DB interfaces.
 2. CORS isn't set up for proper whitelist. 
@@ -44,13 +47,5 @@ Things I totally blew pass or you'll notice.
 5. The API was all coded in the Form component. Obviously should be pulled out.
 6. That goes for all the components. Didn't do a lot of decomposition, confirming functionality first. Cleanup second.
 7. Endpoints and other `env` variables were put inline for simplicity.
-
-
-
-
-
-
-
-Send an email to Scoir (code_challenge@scoir.com) with a link to your newly created repo containing the completed exercise (preferably no later than one day before your next interview).
 
 
